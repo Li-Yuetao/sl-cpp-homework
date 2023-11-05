@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         input_file_name = argv[2]; // "input.txt"
         output_file_name = argv[3]; // "output.txt"
     }
-    std::string data_path = "/home/lyt/WorkSpace/sl_homework/cpp_homework/homework_3/data/";
+    std::string data_path = "../data/";
 
     std::ifstream fin(data_path + input_file_name, std::ios::binary);
     std::ofstream fout(data_path + output_file_name, std::ios::binary);
@@ -65,18 +65,10 @@ int main(int argc, char *argv[])
     for (auto it = codebook_map.begin(); it != codebook_map.end(); it++) {
         reverse_map[it->second] = it->first;
     }
-
-    // while (fin >> line) {
-    //     // std::cout << "byte: " << static_cast<int>(byte) << std::endl;
-    //     // std::cout << "line: " << std::stoi(line) << std::endl;
-    //     int x = std::stoi(line);
-    //     encrypt_num.push_back(codebook_map[static_cast<unsigned char>(x)]);
-    //     if(fin.eof()) break;
-    // }   
-
+    
     while (fin >> line) {
         // 输出前20个加密后的数字
-        if (decrypt_num.size() < 20) std::cout << "static_cast<int>(byte): " << std::stoi(line) << std::endl;
+        // if (decrypt_num.size() < 20) std::cout << "static_cast<int>(byte): " << std::stoi(line) << std::endl;
         int encrypted_value = std::stoi(line);
         auto it = reverse_map.find(encrypted_value);
         if (it != reverse_map.end()) {
@@ -87,17 +79,19 @@ int main(int argc, char *argv[])
     std::cout << "decrypt_num.size(): " << decrypt_num.size() << std::endl;
 
     // 输出解密后的前20个结果
-    for (int i = 0; i < 20; i++)
-    {
-        std::cout << decrypt_num[i] << ' ';
-    }
-    std::cout << std::endl;
+    // for (int i = 0; i < 20; i++)
+    // {
+    //     std::cout << decrypt_num[i] << ' ';
+    // }
+    // std::cout << std::endl;
 
     // 输出解密后的结果
     for (int i = 0; i < decrypt_num.size(); i++)
     {
         fout << static_cast<char>(decrypt_num[i]);
     }
+
+    std::cout << "解密完成！可执行文件已经存放于" << output_file_name << "中" << std::endl;
     
     return 0;
 }

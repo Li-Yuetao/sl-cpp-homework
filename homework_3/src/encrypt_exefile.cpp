@@ -68,11 +68,11 @@ int main(int argc, char *argv[])
         output_file_name = argv[3]; // "encrypted.txt"
     }
 
-    std::string data_path = "/home/lyt/WorkSpace/sl_homework/cpp_homework/homework_3/data/";
+    std::string data_path = "../data/";
     std::ifstream fin(data_path + input_file_name, std::ios::binary);
     std::ofstream fout(data_path + output_file_name, std::ios::binary);
     std::string codebook_file_path = data_path + codebook_file_name;
-    bool update_codebook = false;
+    bool update_codebook = true;
     if (update_codebook)
     {
         if(!createCodebookMap(codebook_file_path)) return -1;
@@ -117,24 +117,7 @@ int main(int argc, char *argv[])
         if (i < encrypt_num.size() - 1)
             fout << " ";
     }
-
-    // // 读取fin文件的内容，也是一段字符串的读取
-    // while(fin >> line)
-    // {
-    //     // std::cout << "fin.rdstate(): " << fin.rdstate() << std::endl;
-    //     std::cout << line << ' ';
-    //     encrypt_num.push_back(codebook_map[std::stoi(line)]);
-    //     if(fin.eof()) break;
-    // }
-    // std::cout << "v_num.size(): " << encrypt_num.size() << std::endl;
-
-    // // 输出加密后的结果
-    // for (int i = 0; i < encrypt_num.size(); i++)
-    // {
-    //     fout << encrypt_num[i];
-    //     if (i < encrypt_num.size() - 1)
-    //         fout << " ";
-    // }
+    std::cout << "加密可执行文件成功！已加密的文件已经存放于" << output_file_name <<"中" << std::endl;
 
     
     return 0;

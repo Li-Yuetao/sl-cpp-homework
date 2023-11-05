@@ -3,9 +3,12 @@
 #include "codebook.hpp"
 
 // 解密函数
-std::string decrypt(const std::string& text, std::map<char,char> keyMap)
+bool decrypt_letter(std::map<char, char>& codebook_map_letter, std::ifstream &fin, std::ofstream &fout)
 {
-    std::string text_tmp = text;
+    std::string line;
+    std::getline(fin, line);
+    std::string text_tmp = line;
+
     for (char& c : text_tmp)
     {
         if (std::isalpha(c))
@@ -17,7 +20,7 @@ std::string decrypt(const std::string& text, std::map<char,char> keyMap)
                 tmp_c = std::tolower(c);
             }
             // 遍历码本映射表，对比c与value，找到对应的key
-            for (std::map<char, char>::iterator iter = keyMap.begin(); iter != keyMap.end(); iter++)
+            for (std::map<char, char>::iterator iter = codebook_map_letter.begin(); iter != codebook_map_letter.end(); iter++)
             {
                 if (iter->second == tmp_c)
                 {
@@ -31,5 +34,38 @@ std::string decrypt(const std::string& text, std::map<char,char> keyMap)
             c = tmp_c;
         }
     }
-    return text_tmp;
+    std::cout << "解密前的数据：" << line << std::endl; // "hello world
+    std::cout << "解密后的结果：" << text_tmp << std::endl;
+    fout << text_tmp;
+    return true;
+}
+
+bool decrypt_number(std::map<int, int>& codebook_map_number, std::ifstream &fin, std::ofstream &fout)
+{
+    // 将codebook_map中的key和value互换
+    std::map<int, int> reverse_map;
+    std::vector<int> decrypt_num;
+    for (auto it = codebook_map_number.begin(); it != codebook_map_number.end(); it++) {
+        reverse_map[it->second] = it->first;
+    }
+
+    std::string line;
+    std::cout << "解密前的数据：";
+    while (fin >> line) {
+        std::cout << std::stoi(line) << " ";
+        decrypt_num.push_back(reverse_map[std::stoi(line)]);
+        if(fin.eof()) break;
+    }
+    std::cout << std::endl;
+    // std::cout << "decrypt_num.size(): " << decrypt_num.size() << std::endl;
+    // 输出解密后的数据
+    std::cout << "解密后的结果：";
+    for (int i = 0; i < decrypt_num.size(); i++) {
+        std::cout << decrypt_num[i] << " ";
+        fout << decrypt_num[i];
+        if (i < decrypt_num.size() - 1)
+            fout << " ";
+    }
+    std::cout << std::endl;
+    return true;
 }
